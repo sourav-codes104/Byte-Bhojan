@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Byte Bhojan - Dashboard</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="dashboard-container">
+  <h2>🛒 Grocery Analyzer</h2>
+
+  <div class="upload-box">
+    <input type="file" id="billImage" accept="image/*">
+    <br><br>
+    <label>Family Members:</label>
+    <input type="number" id="familyMembers" value="1" min="1" style="width:60px; margin-left:8px;">
+    <br><br>
+    <button onclick="analyzeBill()">Analyze Bill</button>
+  </div>
+
+  <div id="loading" style="display:none; margin-top:20px;">⏳ Analyzing...</div>
+  <div id="errorBox" style="color:red; margin-top:20px;"></div>
+
+  <!-- WARNINGS -->
+  <div id="warningsBox" style="display:none; margin-top:20px;">
+    <h3>⚠️ Health Warnings</h3>
+    <ul id="warningsList" style="color:red;"></ul>
+  </div>
+
+  <!-- RESULTS TABLE -->
+  <div id="resultsBox" style="display:none; margin-top:20px;">
+    <h3>📋 Item Breakdown</h3>
+    <table border="1" cellpadding="8" cellspacing="0" style="width:100%; border-collapse:collapse;">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Quantity (g/ml)</th>
+          <th>Calories</th>
+          <th>Carbs (g)</th>
+          <th>Protein (g)</th>
+          <th>Fat (g)</th>
+        </tr>
+      </thead>
+      <tbody id="resultsTable"></tbody>
+    </table>
+  </div>
+
+  <!-- TOTALS -->
+  <div id="totalsBox" style="display:none; margin-top:20px;">
+    <h3>📊 Totals</h3>
+    <p>Calories: <strong id="totCal"></strong></p>
+    <p>Carbs: <strong id="totCarbs"></strong>g</p>
+    <p>Protein: <strong id="totPro"></strong>g</p>
+    <p>Fat: <strong id="totFat"></strong>g</p>
+
+    <h3>👨‍👩‍👧 Per Person</h3>
+    <p>Calories: <strong id="perCal"></strong></p>
+    <p>Carbs: <strong id="perCarbs"></strong>g</p>
+    <p>Protein: <strong id="perPro"></strong>g</p>
+    <p>Fat: <strong id="perFat"></strong>g</p>
+  </div>
+
+  <!-- CHART -->
+  <div id="chartBox" style="display:none; margin-top:30px; max-width:600px;">
+    <h3>📈 Nutrition Chart (Per Person)</h3>
+    <canvas id="nutritionChart"></canvas>
+  </div>
+
+</div>
+
+<script src="/static/dashboard/dashboard.js"></script>
+</body>
+</html>

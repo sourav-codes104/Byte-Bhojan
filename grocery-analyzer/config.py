@@ -1,0 +1,1 @@
+USDA_API_KEY = "YyDDcmWnW89ddxYlZDNg5J59Iy5iXpOvWhjwcRfE"
