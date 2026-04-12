@@ -7,92 +7,332 @@
 
 /* ================= BASE ================= */
 body {
-  background-color: #121212;
+  background: radial-gradient(circle at top, #1a1a1a, #0f0f0f);
   color: #e0e0e0;
   font-family: 'Segoe UI', Roboto, sans-serif;
   min-height: 100vh;
 }
 
-/* ================= AUTH PAGES ================= */
-.auth-container {
-  max-width: 420px;
-  margin: 80px auto;
-  background: #1e1e1e;
+/* ================= AUTH LIGHT — FOOD CHAIN PALETTE ================= */
+
+@keyframes float1 {
+  0%, 100% { transform: translateY(0) rotate(-12deg); }
+  50%       { transform: translateY(-10px) rotate(-8deg); }
+}
+@keyframes float2 {
+  0%, 100% { transform: translateY(0) rotate(10deg); }
+  50%       { transform: translateY(-14px) rotate(14deg); }
+}
+@keyframes float3 {
+  0%, 100% { transform: translateY(0) rotate(5deg); }
+  50%       { transform: translateY(-8px) rotate(2deg); }
+}
+@keyframes float4 {
+  0%, 100% { transform: translateY(0) rotate(-6deg); }
+  50%       { transform: translateY(-12px) rotate(-10deg); }
+}
+@keyframes float5 {
+  0%, 100% { transform: translateY(0) rotate(15deg); }
+  50%       { transform: translateY(-9px) rotate(18deg); }
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: scale(0.95) translateY(24px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes bannerIn {
+  from { opacity: 0; transform: scale(1.06); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes badgePop {
+  from { opacity: 0; transform: translateX(-50%) scale(0.7); }
+  to   { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+/* Outer wrapper */
+.ga-wrap {
+  min-height: 100vh;
+  background: #fff8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Subtle dot pattern background */
+.ga-bg-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, #f97316 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+/* Dashed border frame */
+.ga-border-frame {
+  position: absolute;
+  inset: 14px;
+  border: 2.5px dashed #fed7aa;
+  border-radius: 24px;
+  pointer-events: none;
+}
+
+/* Floating emoji */
+.floatie {
+  position: absolute;
+  font-size: 36px;
+  user-select: none;
+  pointer-events: none;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
+}
+.f1 { top: 4%;    left: 4%;   animation: float1 5s   ease-in-out infinite; }
+.f2 { top: 3%;    right: 6%;  animation: float2 6s   ease-in-out infinite; }
+.f3 { top: 44%;   left: 2%;   animation: float3 4.5s ease-in-out infinite; }
+.f4 { top: 42%;   right: 3%;  animation: float4 5.5s ease-in-out infinite; }
+.f5 { bottom: 10%;left: 5%;   animation: float5 5s   ease-in-out infinite; }
+.f6 { bottom: 8%; right: 5%;  animation: float1 6s   ease-in-out infinite 1s; }
+.f7 { bottom: 24%;left: 42%;  animation: float3 7s   ease-in-out infinite 0.5s; }
+.f8 { top: 18%;   left: 28%;  animation: float2 5.5s ease-in-out infinite 1.5s; }
+
+/* Card */
+.ga-card {
+  background: #fff;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  z-index: 10;
+  border: 1.5px solid #fed7aa;
+  animation: cardIn 0.65s cubic-bezier(.22, .68, 0, 1.2) forwards;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(234, 88, 12, 0.10);
+}
+
+/* Banner */
+.ga-banner {
+  width: 100%;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ea580c, #16a34a);
+}
+.ga-banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.6s ease;
+  animation: bannerIn 0.7s ease both;
+}
+.ga-banner:hover .ga-banner-img {
+  transform: scale(1.05);
+}
+.ga-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(234,88,12,0.52) 100%);
+}
+.ga-banner-badge {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  color: #ea580c;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 5px 20px;
+  border-radius: 999px;
+  white-space: nowrap;
+  animation: badgePop 0.5s 0.4s both;
+  border: 1.5px solid #fed7aa;
+}
+
+/* Card body padding */
+.ga-body {
+  padding: 1.6rem 2rem 1.8rem;
+}
+
+/* Brand */
+.ga-brand {
+  text-align: center;
+  margin-bottom: 1.1rem;
+  animation: fadeInUp 0.5s 0.2s both;
+}
+.ga-brand-name {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: #ea580c;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.ga-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1c1917;
+  margin: 0 0 3px;
+  letter-spacing: -0.02em;
+}
+.ga-sub {
+  font-size: 12px;
+  color: #a8a29e;
+  margin: 0;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Divider */
+.ga-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 1rem 0 1.2rem;
+  animation: fadeInUp 0.5s 0.25s both;
+}
+.ga-divider::before,
+.ga-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, #fed7aa, #bbf7d0);
+}
+.ga-divider span { font-size: 16px; }
+
+/* Form */
+.ga-form {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.ga-field {
+  position: relative;
+  animation: fadeInUp 0.5s both;
+}
+.ga-field:nth-child(1) { animation-delay: 0.28s; }
+.ga-field:nth-child(2) { animation-delay: 0.36s; }
+.ga-field:nth-child(3) { animation-delay: 0.44s; }
+
+.ga-field label {
+  display: block;
+  font-size: 11px;
+  color: #78716c;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+.ga-field input {
+  width: 100%;
+  padding: 11px 14px 11px 42px;
+  border: 1.5px solid #fed7aa;
   border-radius: 12px;
-  padding: 40px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-}
-
-.auth-container h2 {
-  text-align: center;
-  color: #4caf50;
-  font-size: 28px;
-  margin-bottom: 28px;
-  letter-spacing: 1px;
-}
-
-.auth-container input {
-  width: 100%;
-  padding: 14px 16px;
-  margin-bottom: 16px;
-  background: #2c2c2c;
-  border: 1px solid #333;
-  border-radius: 8px;
-  color: #e0e0e0;
-  font-size: 15px;
+  font-size: 14px;
+  color: #1c1917;
+  background: #fff8f4;
   outline: none;
-  transition: border 0.3s;
+  transition: border-color 0.22s, box-shadow 0.22s, background 0.22s;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+.ga-field input:hover:not(:focus) {
+  border-color: #fb923c;
+  background: #fff;
+}
+.ga-field input:focus {
+  border-color: #16a34a;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.13);
 }
 
-.auth-container input:focus {
-  border-color: #4caf50;
-}
-
-.auth-container button {
-  width: 100%;
-  padding: 14px;
-  background: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 8px;
+.ga-icon {
+  position: absolute;
+  left: 13px;
+  bottom: 11px;
   font-size: 16px;
-  font-weight: 600;
+  pointer-events: none;
+}
+
+/* Button */
+.ga-card button[type="submit"] {
+  margin-top: 8px;
+  width: 100%;
+  padding: 13px;
+  border-radius: 12px;
+  border: none;
+  background: #ea580c;
+  color: #fff;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.3s, transform 0.1s;
-  letter-spacing: 0.5px;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  animation: fadeInUp 0.5s 0.5s both;
+  font-family: 'Segoe UI', Roboto, sans-serif;
 }
-
-.auth-container button:hover {
-  background: #43a047;
-  transform: translateY(-1px);
+.ga-card button[type="submit"]:hover {
+  background: #c2410c;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(234, 88, 12, 0.32);
 }
-
-.auth-container button:active {
+.ga-card button[type="submit"]:active {
   transform: translateY(0);
+  box-shadow: none;
+}
+.ga-card button[type="submit"]:disabled {
+  background: #fdba74;
+  cursor: not-allowed;
+  transform: none;
 }
 
-.link-text {
+/* Link */
+.ga-link {
   text-align: center;
-  margin-top: 20px;
-  color: #888;
-  font-size: 14px;
+  font-size: 13px;
+  color: #a8a29e;
+  margin-top: 1.1rem;
+  animation: fadeInUp 0.5s 0.56s both;
 }
-
-.link-text a {
-  color: #4caf50;
+.ga-link a {
+  color: #16a34a;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 700;
+  position: relative;
+  transition: color 0.2s;
 }
-
-.link-text a:hover {
-  text-decoration: underline;
+.ga-link a::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background: #16a34a;
+  transition: 0.3s;
 }
+.ga-link a:hover { color: #15803d; }
+.ga-link a:hover::after { width: 100%; }
 
+/* Message */
 #message {
-  margin-top: 16px;
+  margin-top: 10px;
+  font-size: 13px;
   text-align: center;
-  font-size: 14px;
-  color: #f87171;
+  min-height: 18px;
+  color: #dc2626;
 }
 
 /* ================= DASHBOARD ================= */
@@ -101,16 +341,14 @@ body {
   margin: 40px auto;
   padding: 0 20px 60px;
 }
-
 .dashboard-container h2 {
   text-align: center;
   font-size: 30px;
   color: #4caf50;
   margin-bottom: 30px;
-  letter-spacing: 1px;
 }
 
-/* ================= UPLOAD CARD ================= */
+/* ================= UPLOAD ================= */
 .upload-box {
   background: #1e1e1e;
   border-radius: 12px;
@@ -118,233 +356,79 @@ body {
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   margin-bottom: 24px;
 }
-
 .upload-box input[type="file"] {
   background: #2c2c2c;
-  color: #e0e0e0;
   border: 1px dashed #4caf50;
   border-radius: 8px;
   padding: 12px;
   width: 100%;
-  cursor: pointer;
-  font-size: 14px;
 }
-
-.upload-box label {
-  color: #aaa;
-  font-size: 15px;
-}
-
 .upload-box input[type="number"] {
   background: #2c2c2c;
   border: 1px solid #444;
   border-radius: 6px;
   color: #e0e0e0;
   padding: 8px 10px;
-  font-size: 15px;
-  outline: none;
 }
-
-.upload-box input[type="number"]:focus {
-  border-color: #4caf50;
-}
-
 .upload-box button {
   margin-top: 16px;
   width: 100%;
   padding: 14px;
-  background: #4caf50;
-  color: white;
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
-  letter-spacing: 0.5px;
-  transition: background 0.3s, transform 0.1s;
 }
-
 .upload-box button:hover {
-  background: #43a047;
-  transform: translateY(-1px);
-}
-
-.upload-box button:active {
-  transform: translateY(0);
-}
-
-/* ================= LOADING ================= */
-#loading {
-  text-align: center;
-  color: #4caf50;
-  font-size: 16px;
-  padding: 16px;
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.4; }
-}
-
-/* ================= ERROR ================= */
-#errorBox {
-  background: #2c1b1b;
-  color: #f87171;
-  border-left: 4px solid #f87171;
-  border-radius: 8px;
-  padding: 14px 16px;
-  margin-top: 16px;
-  font-size: 14px;
-  display: none;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(76,175,80,0.4);
 }
 
 /* ================= CARDS ================= */
 .card {
   background: #1e1e1e;
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 24px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   margin-top: 24px;
 }
-
-.card h3 {
-  font-size: 18px;
-  color: #4caf50;
-  margin-bottom: 16px;
-  border-bottom: 1px solid #2c2c2c;
-  padding-bottom: 10px;
-}
+.card h3 { color: #4caf50; margin-bottom: 12px; }
 
 /* ================= WARNINGS ================= */
 #warningsBox {
-  background: #1e1e1e;
   border-left: 4px solid #f87171;
+  background: #1e1e1e;
+  padding: 20px;
   border-radius: 12px;
-  padding: 20px 24px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   margin-top: 24px;
 }
-
-#warningsBox h3 {
-  color: #f87171;
-  margin-bottom: 12px;
-  font-size: 18px;
-}
-
-#warningsList {
-  list-style: none;
-  padding: 0;
-}
-
-#warningsList li {
-  color: #f87171;
-  padding: 6px 0;
-  font-size: 14px;
-  border-bottom: 1px solid #2c2c2c;
-}
-
-#warningsList li:last-child {
-  border-bottom: none;
-}
+#warningsList li { color: #f87171; padding: 6px 0; }
 
 /* ================= TABLE ================= */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
+table { width: 100%; border-collapse: collapse; }
+thead { background: #2c2c2c; }
+th, td { padding: 10px; }
 
-thead tr {
-  background: #2c2c2c;
-}
-
-thead th {
-  padding: 12px 14px;
-  text-align: left;
-  color: #4caf50;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-}
-
-tbody tr {
-  border-bottom: 1px solid #2a2a2a;
-  transition: background 0.2s;
-}
-
-tbody tr:hover {
-  background: #252525;
-}
-
-tbody td {
-  padding: 11px 14px;
-  color: #ccc;
-}
-
-/* ================= TOTALS GRID ================= */
+/* ================= STATS ================= */
 .totals-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-top: 8px;
 }
-
 .stat-box {
   background: #2c2c2c;
   border-radius: 10px;
   padding: 16px;
   text-align: center;
 }
-
-.stat-box .stat-label {
-  font-size: 12px;
-  color: #888;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 6px;
-}
-
-.stat-box .stat-value {
-  font-size: 22px;
-  font-weight: 700;
-  color: #4caf50;
-}
-
-.stat-box .stat-unit {
-  font-size: 11px;
-  color: #666;
-  margin-top: 2px;
-}
-
-/* ================= CHARTS ================= */
-#chartBox, #categoryBox {
-  background: #1e1e1e;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  margin-top: 24px;
-}
-
-#chartBox h3, #categoryBox h3 {
-  font-size: 18px;
-  color: #4caf50;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #2c2c2c;
-  padding-bottom: 10px;
-}
+.stat-value { font-size: 22px; color: #4caf50; }
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 600px) {
-  .totals-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .dashboard-container {
-    padding: 0 12px 40px;
-  }
-
-  thead th, tbody td {
-    padding: 9px 8px;
-    font-size: 12px;
-  }
+  .dashboard-container { padding: 0 12px; }
+  .ga-card { border-radius: 18px; }
+  .ga-banner { height: 160px; }
+  .ga-body { padding: 1.2rem 1.3rem 1.5rem; }
+  .floatie { font-size: 26px; }
 }
