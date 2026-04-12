@@ -4,6 +4,7 @@ from app.utils.ocr_utils import (
     extract_text, parse_items, calculate_nutrition,
     calculate_totals, divide_per_person, generate_warnings
 )
+from app.utils.category_utils import categorize_items
 
 upload_bp = Blueprint("upload", __name__)
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp"}
@@ -58,13 +59,15 @@ def upload():
         totals     = calculate_totals(results)
         per_person = divide_per_person(totals, family_members)
         warnings   = generate_warnings(per_person)
+        categories = categorize_items(results)  # ✅ new
 
         return jsonify({
             "raw_text":   text,
             "results":    results,
             "totals":     totals,
             "per_person": per_person,
-            "warnings":   warnings
+            "warnings":   warnings,
+            "categories": categories  # ✅ new
         }), 200
 
     except Exception as e:
