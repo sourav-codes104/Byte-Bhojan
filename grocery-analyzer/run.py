@@ -3,17 +3,18 @@ from app.database import init_db
 from app.routes.auth_routes import auth
 from app.routes.upload import upload_bp
 
-# ✅ create app FIRST
+# create app FIRST
 app = Flask(__name__, static_folder="static")
 
-# ✅ register routes AFTER app creation
+# register routes AFTER app creation
 app.register_blueprint(auth)
 app.register_blueprint(upload_bp)
 
 
 @app.route("/")
 def home():
-    return app.send_static_file("auth/login.html")
+    # Landing page is the entry point
+    return app.send_static_file("landing/index.html")
 
 
 @app.route("/static/<path:filename>")

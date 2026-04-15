@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Byte Bhojan – Grocery Analyzer</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/landing/landing.css">
+</head>
+<body class="lp-body">
+
+<!-- ===== NAVBAR ===== -->
+<nav class="lp-nav">
+  <div class="lp-nav-inner">
+    <div class="lp-logo">
+      <span class="lp-logo-icon">🛒</span>
+      <span class="lp-logo-text">Byte<span class="lp-logo-accent">Bhojan</span></span>
+    </div>
+    <div class="lp-nav-btns">
+      <a href="/static/auth/login.html" class="lp-btn lp-btn-ghost">Login</a>
+      <a href="/static/auth/signup.html" class="lp-btn lp-btn-outline">Sign Up</a>
+      <a href="#contact" class="lp-btn lp-btn-solid">Contact</a>
+    </div>
+    <button class="lp-hamburger" id="hamburger" aria-label="Menu">&#9776;</button>
+  </div>
+  <div class="lp-mobile-menu" id="mobileMenu">
+    <a href="/static/auth/login.html">Login</a>
+    <a href="/static/auth/signup.html">Sign Up</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="lp-hero">
+  <div class="lp-hero-bg">
+    <img src="https://media.istockphoto.com/id/1409236261/photo/healthy-food-healthy-eating-background-fruit-vegetable-berry-vegetarian-eating-superfood.webp?a=1&b=1&s=612x612&w=0&k=20&c=9iXfq7aU8ST5daSEfJfTYITHbpUS9vquT0IAink2PDg=" alt="Healthy food" class="lp-hero-img" />
+    <div class="lp-hero-overlay"></div>
+  </div>
+
+  <span class="lp-floatie lf1">🥦</span>
+  <span class="lp-floatie lf2">🍎</span>
+  <span class="lp-floatie lf3">🛒</span>
+  <span class="lp-floatie lf4">🥕</span>
+  <span class="lp-floatie lf5">🍋</span>
+  <span class="lp-floatie lf6">🫑</span>
+
+  <div class="lp-hero-content">
+    <div class="lp-hero-badge">🌿 Smart Nutrition Awareness</div>
+    <h1 class="lp-hero-heading">
+      <span class="lp-marquee-wrap">
+        <span class="lp-marquee-text" id="heroTitle">Welcome to Grocery Analyzer</span>
+      </span>
+    </h1>
+    <p class="lp-hero-sub">Turn your grocery receipts into personalized nutrition insights — no manual entry required.</p>
+    <div class="lp-hero-cta">
+      <a href="/static/auth/signup.html" class="lp-cta-primary">Get Started Free</a>
+      <a href="#how-it-works" class="lp-cta-secondary">See How It Works</a>
+    </div>
+    <div class="lp-hero-stats">
+      <div class="lp-hstat"><span class="lp-hstat-val">500+</span><span class="lp-hstat-lbl">Users</span></div>
+      <div class="lp-hstat-div"></div>
+      <div class="lp-hstat"><span class="lp-hstat-val">10k+</span><span class="lp-hstat-lbl">Receipts Analyzed</span></div>
+      <div class="lp-hstat-div"></div>
+      <div class="lp-hstat"><span class="lp-hstat-val">USDA</span><span class="lp-hstat-lbl">Database</span></div>
+    </div>
+  </div>
+
+  <div class="lp-hero-scroll">
+    <span>↓</span>
+  </div>
+</section>
+
+<!-- ===== PROBLEM STATEMENT ===== -->
+<section class="lp-problem" id="problem">
+  <div class="lp-container">
+    <div class="lp-section-label">The Problem</div>
+    <h2 class="lp-section-title">Nutrition Awareness Gap</h2>
+    <div class="lp-problem-grid">
+      <div class="lp-problem-img-wrap">
+        <img src="https://media.istockphoto.com/id/598960430/photo/food-high-in-protein-protein-sources.jpg?s=612x612&w=0&k=20&c=wmiL2CGL8AYgI2QYcrFlr7ijamQeA8CNQX_K_Oz8uBk=" alt="Nutritious food" class="lp-problem-img" />
+      </div>
+      <div class="lp-problem-text">
+        <div class="lp-problem-card">
+          <span class="lp-prob-icon">😕</span>
+          <div>
+            <h3>People want to eat healthy</h3>
+            <p>Millions of individuals want a nutritious diet but don't know the nutritional content of what they're buying at the store.</p>
+          </div>
+        </div>
+        <div class="lp-problem-card">
+          <span class="lp-prob-icon">📋</span>
+          <div>
+            <h3>Existing apps require manual input</h3>
+            <p>Current nutrition tracking apps force users to manually log every food item — a tedious process that most people quickly abandon.</p>
+          </div>
+        </div>
+        <div class="lp-problem-card lp-prob-highlight">
+          <span class="lp-prob-icon">🧾</span>
+          <div>
+            <h3>Receipts are untapped data</h3>
+            <p>Grocery receipts carry detailed purchase data that can unlock powerful nutrition awareness — but no one is using them. <strong>Until now.</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURES ===== -->
+<section class="lp-features" id="features">
+  <div class="lp-container">
+    <div class="lp-section-label">Features</div>
+    <h2 class="lp-section-title">Everything You Need</h2>
+    <div class="lp-features-grid">
+      <div class="lp-feat-card">
+        <div class="lp-feat-icon">📷</div>
+        <h3>Receipt Scanning</h3>
+        <p>Upload a photo of your grocery receipt and our AI extracts every purchased item automatically.</p>
+      </div>
+      <div class="lp-feat-card lp-feat-accent">
+        <div class="lp-feat-icon">🧬</div>
+        <h3>Nutrition Analysis</h3>
+        <p>Powered by the USDA food database to give you accurate calorie, protein, carbs, fat, and micronutrient data.</p>
+      </div>
+      <div class="lp-feat-card">
+        <div class="lp-feat-icon">⚠️</div>
+        <h3>Health Warnings</h3>
+        <p>Instantly flags items high in sodium, sugar, or saturated fat to help you make smarter choices.</p>
+      </div>
+      <div class="lp-feat-card">
+        <div class="lp-feat-icon">🥗</div>
+        <h3>Food Pyramid</h3>
+        <p>Visualizes your purchase basket against recommended dietary guidelines for a balanced diet.</p>
+      </div>
+      <div class="lp-feat-card lp-feat-accent">
+        <div class="lp-feat-icon">📊</div>
+        <h3>Purchase History</h3>
+        <p>Track your grocery habits over time and watch your nutrition patterns improve week by week.</p>
+      </div>
+      <div class="lp-feat-card">
+        <div class="lp-feat-icon">👨‍👩‍👧</div>
+        <h3>Family Profiles</h3>
+        <p>Set family size and get nutrition totals adjusted per person for accurate household planning.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="lp-how" id="how-it-works">
+  <div class="lp-container">
+    <div class="lp-section-label">Process</div>
+    <h2 class="lp-section-title">How It Works</h2>
+    <div class="lp-steps">
+      <div class="lp-step">
+        <div class="lp-step-num">1</div>
+        <div class="lp-step-line"></div>
+        <div class="lp-step-body">
+          <h3>Create your account</h3>
+          <p>Sign up in seconds with just your name, email and password.</p>
+        </div>
+      </div>
+      <div class="lp-step">
+        <div class="lp-step-num">2</div>
+        <div class="lp-step-line"></div>
+        <div class="lp-step-body">
+          <h3>Upload your receipt</h3>
+          <p>Take a photo or upload an image of your grocery bill.</p>
+        </div>
+      </div>
+      <div class="lp-step">
+        <div class="lp-step-num">3</div>
+        <div class="lp-step-line"></div>
+        <div class="lp-step-body">
+          <h3>AI extracts items</h3>
+          <p>Our system reads and identifies each grocery item on the receipt.</p>
+        </div>
+      </div>
+      <div class="lp-step">
+        <div class="lp-step-num">4</div>
+        <div class="lp-step-line lp-step-last"></div>
+        <div class="lp-step-body">
+          <h3>Get your nutrition report</h3>
+          <p>View a detailed breakdown with warnings, stats, and food pyramid.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TEAM ===== -->
+<section class="lp-team" id="team">
+  <div class="lp-container">
+    <div class="lp-section-label">Our Team</div>
+    <h2 class="lp-section-title">Meet the Builders</h2>
+    <div class="lp-team-grid">
+      <div class="lp-member-card">
+        <div class="lp-member-avatar" style="background: #fff8f0; color: #ea580c;">AA</div>
+        <div class="lp-member-name">Isheeka Soni</div>
+        <div class="lp-member-role">Team Lead</div>
+        <div class="lp-member-emoji">🧠</div>
+      </div>
+      <div class="lp-member-card">
+        <div class="lp-member-avatar" style="background: #f0fdf4; color: #16a34a;">PM</div>
+        <div class="lp-member-name">Thakur Pal Rajput</div>
+        <div class="lp-member-role">Data Engineer</div>
+        <div class="lp-member-emoji">🎨</div>
+      </div>
+      <div class="lp-member-card">
+        <div class="lp-member-avatar" style="background: #fff8f0; color: #ea580c;">RK</div>
+        <div class="lp-member-name">Shubham Rathore</div>
+        <div class="lp-member-role">Frontend Developer</div>
+        <div class="lp-member-emoji">🤖</div>
+      </div>
+      <div class="lp-member-card">
+        <div class="lp-member-avatar" style="background: #f0fdf4; color: #16a34a;">SJ</div>
+        <div class="lp-member-name">Shyamu Pathak</div>
+        <div class="lp-member-role">Integration Engineer</div>
+        <div class="lp-member-emoji">📊</div>
+      </div>
+      <div class="lp-member-card">
+        <div class="lp-member-avatar" style="background: #fff8f0; color: #ea580c;">VP</div>
+        <div class="lp-member-name">Sourav Singh</div>
+        <div class="lp-member-role">Backend Developer</div>
+        <div class="lp-member-emoji">🗄️</div>
+      </div>
+      <div class="lp-member-card">
+        <div class="lp-member-avatar" style="background: #f0fdf4; color: #16a34a;">AN</div>
+        <div class="lp-member-name">Yashpratap Singh Shikarwar</div>
+        <div class="lp-member-role">Testing Engineer</div>
+        <div class="lp-member-emoji">✏️</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TERMS & CONDITIONS ===== -->
+<section class="lp-terms" id="terms">
+  <div class="lp-container">
+    <div class="lp-section-label">Legal</div>
+    <h2 class="lp-section-title">Terms &amp; Conditions</h2>
+    <div class="lp-terms-accordion">
+
+      <div class="lp-accord-item">
+        <button class="lp-accord-btn" onclick="toggleAccord(this)">
+          <span>1. Acceptance of Terms</span><span class="lp-accord-icon">+</span>
+        </button>
+        <div class="lp-accord-body">
+          <p>By accessing or using Byte Bhojan (Grocery Analyzer), you agree to be bound by these Terms and Conditions. If you do not agree, please refrain from using the service. These terms apply to all users, including visitors, registered users, and contributors.</p>
+        </div>
+      </div>
+
+      <div class="lp-accord-item">
+        <button class="lp-accord-btn" onclick="toggleAccord(this)">
+          <span>2. Purpose &amp; Scope of Service</span><span class="lp-accord-icon">+</span>
+        </button>
+        <div class="lp-accord-body">
+          <p>Byte Bhojan is designed to help users become more aware of the nutritional content of their grocery purchases by analyzing uploaded receipt images. The service is for educational and informational purposes only. Nutritional data is sourced from the USDA database and may vary from actual product contents. This service does not constitute medical or dietary advice.</p>
+        </div>
+      </div>
+
+      <div class="lp-accord-item">
+        <button class="lp-accord-btn" onclick="toggleAccord(this)">
+          <span>3. User Data &amp; Privacy</span><span class="lp-accord-icon">+</span>
+        </button>
+        <div class="lp-accord-body">
+          <p>Receipt images and extracted grocery data are stored securely and are only accessible to the account holder. We do not sell or share your personal purchase history with third parties. Uploaded images may be processed by AI models to extract item information. By uploading a receipt, you consent to this processing.</p>
+        </div>
+      </div>
+
+      <div class="lp-accord-item">
+        <button class="lp-accord-btn" onclick="toggleAccord(this)">
+          <span>4. Accuracy of Nutritional Information</span><span class="lp-accord-icon">+</span>
+        </button>
+        <div class="lp-accord-body">
+          <p>Nutritional values provided are estimates based on standard USDA data for generic food items. Actual nutritional content may differ due to brand variations, preparation methods, or regional differences. Byte Bhojan is not liable for decisions made based on the nutritional data provided. Always consult a registered dietitian for clinical nutrition advice.</p>
+        </div>
+      </div>
+
+      <div class="lp-accord-item">
+        <button class="lp-accord-btn" onclick="toggleAccord(this)">
+          <span>5. Acceptable Use</span><span class="lp-accord-icon">+</span>
+        </button>
+        <div class="lp-accord-body">
+          <p>Users agree not to upload fraudulent, misleading, or non-grocery receipts. Misuse of the platform including attempting to reverse-engineer the AI system, scraping data, or circumventing authentication is strictly prohibited and may result in immediate account termination.</p>
+        </div>
+      </div>
+
+      <div class="lp-accord-item">
+        <button class="lp-accord-btn" onclick="toggleAccord(this)">
+          <span>6. Changes to Terms</span><span class="lp-accord-icon">+</span>
+        </button>
+        <div class="lp-accord-body">
+          <p>Byte Bhojan reserves the right to update these Terms and Conditions at any time. Users will be notified of significant changes via email or in-app notification. Continued use of the service after changes constitutes acceptance of the revised terms.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="lp-contact" id="contact">
+  <div class="lp-container">
+    <div class="lp-section-label">Get in Touch</div>
+    <h2 class="lp-section-title">Contact Us</h2>
+    <div class="lp-contact-grid">
+      <div class="lp-contact-info">
+        <div class="lp-contact-item"><span>📧</span><span>hello@bytebhojan.in</span></div>
+        <div class="lp-contact-item"><span>📍</span><span>Indore, Madhya Pradesh, India</span></div>
+        <div class="lp-contact-item"><span>🕐</span><span>Mon–Fri, 9 AM – 6 PM IST</span></div>
+        <div class="lp-contact-item"><span>🌐</span><span>bytebhojan.in</span></div>
+      </div>
+      <form class="lp-contact-form" onsubmit="handleContact(event)">
+        <input type="text" placeholder="Your name" required class="lp-input" />
+        <input type="email" placeholder="your@email.com" required class="lp-input" />
+        <textarea placeholder="Your message..." rows="4" required class="lp-textarea"></textarea>
+        <button type="submit" class="lp-btn-solid lp-submit-btn">Send Message →</button>
+        <div id="contactMsg" class="lp-contact-msg"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="lp-footer">
+  <div class="lp-container">
+    <div class="lp-footer-top">
+      <div class="lp-footer-brand">
+        <span class="lp-logo-icon">🛒</span>
+        <span class="lp-logo-text">Byte<span class="lp-logo-accent">Bhojan</span></span>
+        <p>Making nutrition awareness effortless through grocery receipt analysis.</p>
+      </div>
+      <div class="lp-footer-links">
+        <div>
+          <h4>Product</h4>
+          <a href="#features">Features</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="/static/auth/login.html">Login</a>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <a href="#team">Team</a>
+          <a href="#terms">Terms</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+    </div>
+    <div class="lp-footer-bottom">
+      <p>© 2026 Byte Bhojan. Built with ❤️ for nutrition awareness.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="/static/landing/landing.js"></script>
+</body>
+</html>
