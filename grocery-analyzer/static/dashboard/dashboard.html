@@ -1,109 +1,207 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Byte Bhojan - Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grocery Analyzer – Dashboard</title>
   <link rel="stylesheet" href="/static/css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-<div class="dashboard-container">
-  <h2>🛒 Grocery Analyzer</h2>
+<div class="db-page">
+  <div class="db-bg-dots"></div>
 
-  <!-- UPLOAD CARD -->
-  <div class="upload-box">
-    <input type="file" id="billImage" accept="image/*">
-    <br><br>
-    <label>👨‍👩‍👧 Family Members:</label>
-    <input type="number" id="familyMembers" value="1" min="1" style="width:70px; margin-left:10px;">
-    <button onclick="analyzeBill()">🔍 Analyze Bill</button>
-  </div>
-
-  <div id="loading" style="display:none; margin-top:20px;">⏳ Analyzing your grocery bill...</div>
-  <div id="errorBox" style="display:none;"></div>
-
-  <!-- WARNINGS -->
-  <div id="warningsBox" style="display:none;">
-    <h3>⚠️ Health Warnings</h3>
-    <ul id="warningsList"></ul>
-  </div>
-
-  <!-- RESULTS TABLE -->
-  <div id="resultsBox" class="card" style="display:none;">
-    <h3>📋 Item Breakdown</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Item</th>
-          <th>Quantity</th>
-          <th>Calories</th>
-          <th>Carbs (g)</th>
-          <th>Protein (g)</th>
-          <th>Fat (g)</th>
-        </tr>
-      </thead>
-      <tbody id="resultsTable"></tbody>
-    </table>
-  </div>
-
-  <!-- TOTALS -->
-  <div id="totalsBox" class="card" style="display:none;">
-    <h3>📊 Total Nutrition</h3>
-    <div class="totals-grid">
-      <div class="stat-box">
-        <div class="stat-label">Calories</div>
-        <div class="stat-value" id="totCal">-</div>
-        <div class="stat-unit">kcal</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">Carbs</div>
-        <div class="stat-value" id="totCarbs">-</div>
-        <div class="stat-unit">grams</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">Protein</div>
-        <div class="stat-value" id="totPro">-</div>
-        <div class="stat-unit">grams</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">Fat</div>
-        <div class="stat-value" id="totFat">-</div>
-        <div class="stat-unit">grams</div>
-      </div>
+  <!-- HERO BANNER SLIDESHOW -->
+  <div class="db-hero" id="dbHero">
+    <img class="db-hero-img db-hero-img1" src="https://miro.medium.com/v2/resize:fit:1400/0*I0eib7kRe1y278DY"
+      alt="groceries" onerror="this.style.display='none'">
+    <img class="db-hero-img db-hero-img2" src="https://perfectsnacks.com/cdn/shop/articles/nrd-D6Tu_L3chLE-unsplash-e1587487205902_08b0ff99-6514-48bf-a4c2-15f70f60002b.jpg?v=1753901187"
+      alt="fresh snacks" onerror="this.style.display='none'">
+    <img class="db-hero-img db-hero-img3" src="https://a.storyblok.com/f/158954/6113x3968/f3e2759bda/4384f5_05a267a806fa466c8dcc213ecbc50d15_mv2.jpeg/m/2048x1329/filters:quality(75)"
+      alt="fresh produce" onerror="this.style.display='none'">
+    <div class="db-hero-overlay"></div>
+    <div class="db-hero-content">
+      <div class="db-hero-badge">🛒 grocery-analyzer</div>
+      <h1 class="db-hero-title">Analyze Your Grocery Bill</h1>
+      <p class="db-hero-sub">Smart Nutrition Insights for Your Family</p>
     </div>
-
-    <h3 style="margin-top:24px;">👨‍👩‍👧 Per Person</h3>
-    <div class="totals-grid">
-      <div class="stat-box">
-        <div class="stat-label">Calories</div>
-        <div class="stat-value" id="perCal">-</div>
-        <div class="stat-unit">kcal</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">Carbs</div>
-        <div class="stat-value" id="perCarbs">-</div>
-        <div class="stat-unit">grams</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">Protein</div>
-        <div class="stat-value" id="perPro">-</div>
-        <div class="stat-unit">grams</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">Fat</div>
-        <div class="stat-value" id="perFat">-</div>
-        <div class="stat-unit">grams</div>
-      </div>
+    <div class="db-hero-dots">
+      <div class="db-dot active" onclick="showSlide(0)"></div>
+      <div class="db-dot" onclick="showSlide(1)"></div>
+      <div class="db-dot" onclick="showSlide(2)"></div>
     </div>
   </div>
 
-  <!-- FOOD PYRAMID -->
-  <div id="pyramidBox" class="card" style="display:none;">
-    <h3>🔺 Food Pyramid</h3>
-    <div id="pyramidSvg" style="text-align:center;"></div>
-  </div>
+  <span class="floatie fdb1">🥦</span>
+  <span class="floatie fdb2">🍎</span>
+  <span class="floatie fdb3">🥕</span>
+  <span class="floatie fdb4">🫑</span>
 
+  <div class="db-main">
+
+    <!-- PHOTO STRIP -->
+    <div class="db-photo-strip">
+      <div class="db-photo-card">
+        <img src="https://perfectsnacks.com/cdn/shop/articles/nrd-D6Tu_L3chLE-unsplash-e1587487205902_08b0ff99-6514-48bf-a4c2-15f70f60002b.jpg?v=1753901187"
+          alt="Fresh & Healthy" onerror="this.parentElement.style.background='linear-gradient(135deg,#fed7aa,#bbf7d0)'">
+        <div class="db-photo-label">🥗 Fresh & Healthy</div>
+      </div>
+      <div class="db-photo-card">
+        <img src="https://a.storyblok.com/f/158954/6113x3968/f3e2759bda/4384f5_05a267a806fa466c8dcc213ecbc50d15_mv2.jpeg/m/2048x1329/filters:quality(75)"
+          alt="Farm to Table" onerror="this.parentElement.style.background='linear-gradient(135deg,#bbf7d0,#fed7aa)'">
+        <div class="db-photo-label">🌽 Farm to Table</div>
+      </div>
+    </div>
+
+    <!-- UPLOAD CARD -->
+    <div class="db-upload">
+      <div class="db-section-title">
+        <span>📤</span> Upload Grocery Bill
+        <span class="db-section-badge">AI Powered</span>
+      </div>
+      <div class="db-upload-grid">
+        <div class="db-file-area" onclick="document.getElementById('billImage').click()">
+          <div class="db-file-icon">🧾</div>
+          <div class="db-file-text" id="fileLabel">Click to upload your bill image</div>
+          <input type="file" id="billImage" class="db-file-input" accept="image/*" onchange="updateFileLabel(this)">
+        </div>
+        <div class="db-family-box">
+          <div class="db-family-label">👨‍👩‍👧 Family Members</div>
+          <input type="number" id="familyMembers" class="db-family-input" value="1" min="1">
+        </div>
+      </div>
+      <button class="db-analyze-btn" onclick="analyzeBill()">🔍 Analyze Bill</button>
+    </div>
+
+    <!-- LOADING -->
+    <div class="db-loading" id="loading">
+      <div class="db-loading-text">⏳ Analyzing your grocery bill...</div>
+      <div class="db-loading-bar">
+        <div class="db-loading-fill" id="loadingFill"></div>
+      </div>
+    </div>
+
+    <!-- ERROR -->
+    <div class="db-error" id="errorBox"></div>
+
+    <!-- WARNINGS -->
+    <div class="db-warnings" id="warningsBox" style="display:none;">
+      <div class="db-section-title"><span>⚠️</span> Health Warnings</div>
+      <ul id="warningsList"></ul>
+    </div>
+
+    <!-- RESULTS TABLE -->
+    <div class="db-results" id="resultsBox" style="display:none;">
+      <div class="db-section-title"><span>📋</span> Item Breakdown</div>
+      <div style="overflow-x:auto;">
+        <table class="db-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Quantity</th>
+              <th>Calories</th>
+              <th>Carbs (g)</th>
+              <th>Protein (g)</th>
+              <th>Fat (g)</th>
+            </tr>
+          </thead>
+          <tbody id="resultsTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TOTALS -->
+    <div class="db-stats-section" id="totalsBox" style="display:none;">
+      <div class="db-section-title"><span>📊</span> Total Nutrition</div>
+      <div class="db-stats-grid">
+        <div class="db-stat db-stat-orange">
+          <div class="db-stat-icon">🔥</div>
+          <div class="db-stat-label">Calories</div>
+          <div class="db-stat-value" id="totCal">-</div>
+          <div class="db-stat-unit">kcal</div>
+        </div>
+        <div class="db-stat db-stat-amber">
+          <div class="db-stat-icon">🌾</div>
+          <div class="db-stat-label">Carbs</div>
+          <div class="db-stat-value" id="totCarbs">-</div>
+          <div class="db-stat-unit">grams</div>
+        </div>
+        <div class="db-stat db-stat-green">
+          <div class="db-stat-icon">💪</div>
+          <div class="db-stat-label">Protein</div>
+          <div class="db-stat-value" id="totPro">-</div>
+          <div class="db-stat-unit">grams</div>
+        </div>
+        <div class="db-stat db-stat-red">
+          <div class="db-stat-icon">🫙</div>
+          <div class="db-stat-label">Fat</div>
+          <div class="db-stat-value" id="totFat">-</div>
+          <div class="db-stat-unit">grams</div>
+        </div>
+      </div>
+
+      <div class="db-section-title" style="margin-top:24px">
+        <span>👨‍👩‍👧</span> Per Person
+      </div>
+      <div class="db-stats-grid">
+        <div class="db-stat db-stat-orange">
+          <div class="db-stat-icon">🔥</div>
+          <div class="db-stat-label">Calories</div>
+          <div class="db-stat-value" id="perCal">-</div>
+          <div class="db-stat-unit">kcal</div>
+        </div>
+        <div class="db-stat db-stat-amber">
+          <div class="db-stat-icon">🌾</div>
+          <div class="db-stat-label">Carbs</div>
+          <div class="db-stat-value" id="perCarbs">-</div>
+          <div class="db-stat-unit">grams</div>
+        </div>
+        <div class="db-stat db-stat-green">
+          <div class="db-stat-icon">💪</div>
+          <div class="db-stat-label">Protein</div>
+          <div class="db-stat-value" id="perPro">-</div>
+          <div class="db-stat-unit">grams</div>
+        </div>
+        <div class="db-stat db-stat-red">
+          <div class="db-stat-icon">🫙</div>
+          <div class="db-stat-label">Fat</div>
+          <div class="db-stat-value" id="perFat">-</div>
+          <div class="db-stat-unit">grams</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOD PYRAMID -->
+    <div class="db-pyramid" id="pyramidBox" style="display:none;">
+      <div class="db-section-title" style="justify-content:center">
+        <span>🔺</span> Food Pyramid
+      </div>
+      <div id="pyramidSvg" style="text-align:center;"></div>
+    </div>
+
+  </div>
 </div>
+
+<script>
+let currentSlide = 0;
+const slideImgs = ['db-hero-img1', 'db-hero-img2', 'db-hero-img3'];
+const dots = document.querySelectorAll('.db-dot');
+
+function showSlide(n) {
+  document.querySelector('.' + slideImgs[currentSlide]).style.opacity = '0';
+  dots[currentSlide].classList.remove('active');
+  currentSlide = n;
+  document.querySelector('.' + slideImgs[currentSlide]).style.opacity = '1';
+  dots[currentSlide].classList.add('active');
+}
+setInterval(() => showSlide((currentSlide + 1) % 3), 3500);
+
+function updateFileLabel(input) {
+  const lbl = document.getElementById('fileLabel');
+  lbl.textContent = input.files[0] ? input.files[0].name : 'Click to upload your bill image';
+}
+</script>
 
 <script src="/static/dashboard/dashboard.js"></script>
 </body>
