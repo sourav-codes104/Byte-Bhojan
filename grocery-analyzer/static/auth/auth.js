@@ -1,4 +1,5 @@
-const BASE_URL = "http://127.0.0.1:5000";
+// Use relative URL – no hardcoded IP/port
+const BASE_URL = "";
 
 document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.getElementById("loginForm");
@@ -14,19 +15,27 @@ async function handleLogin(e) {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    const res = await fetch(`${BASE_URL}/login`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ email, password })
-    });
+    try {
+        const res = await fetch(`${BASE_URL}/login`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ email, password })
+        });
 
-    const data = await res.json();
+        const data = await res.json();
 
-    if (res.ok && data.token) {
-        localStorage.setItem("token", data.token);
-        window.location.href = "/static/dashboard/dashboard.html";
-    } else {
-        displayMessage(data.error || "Login failed", "error");
+        if (res.ok && data.token) {
+            localStorage.setItem("token", data.token);
+            // 🔥 Store user_id as well (required for members)
+            if (data.user_id) {
+                localStorage.setItem("user_id", data.user_id);
+            }
+            window.location.href = "/static/dashboard/dashboard.html";
+        } else {
+            displayMessage(data.error || "Login failed", "error");
+        }
+    } catch (err) {
+        displayMessage("Network error: " + err.message, "error");
     }
 }
 
@@ -36,20 +45,29 @@ async function handleSignup(e) {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    const res = await fetch(`${BASE_URL}/signup`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ name, email, password })    });
+    try {
+        const res = await fetch(`${BASE_URL}/signup`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ name, email, password })
+        });
 
-    const data = await res.json();
+        const data = await res.json();
 
-    if (res.ok) {
-        displayMessage("Signup successful!", "success");
-        setTimeout(() => {
-            window.location.href = "/static/auth/login.html";
-        }, 1000);
-    } else {
-        displayMessage(data.error || "Signup failed", "error");
+        if (res.ok) {
+            localStorage.setItem("user_id", data.user_id);
+            if (data.token) {
+                localStorage.setItem("token", data.token);
+            }
+            displayMessage("Signup successful!", "success");
+            setTimeout(() => {
+                window.location.href = "/static/members/add-members.html";
+            }, 1000);
+        } else {
+            displayMessage(data.error || "Signup failed", "error");
+        }
+    } catch (err) {
+        displayMessage("Network error: " + err.message, "error");
     }
 }
 

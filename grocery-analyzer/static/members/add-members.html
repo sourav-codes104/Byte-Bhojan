@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family Members – Grocery Analyzer</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/members/members.css">
+</head>
+<body class="mem-body">
+
+  <!-- BG DOTS -->
+  <div class="ga-bg-dots"></div>
+  <div class="ga-border-frame"></div>
+
+  <!-- FLOATIES -->
+  <span class="floatie f1">🥦</span>
+  <span class="floatie f2">👨‍👩‍👧</span>
+  <span class="floatie f3">🍎</span>
+  <span class="floatie f4">🥕</span>
+  <span class="floatie f5">🧅</span>
+  <span class="floatie f6">🍋</span>
+  <span class="floatie f7">🫑</span>
+  <span class="floatie f8">🥬</span>
+
+  <!-- MAIN CARD -->
+  <div class="mem-wrap">
+    <div class="mem-header">
+      <div class="mem-header-icon">👨‍👩‍👧‍👦</div>
+      <div>
+        <div class="mem-brand-label">🛒 grocery-analyzer</div>
+        <h1 class="mem-title">Family Members</h1>
+        <p class="mem-subtitle">Add members to personalize your nutrition analysis</p>
+      </div>
+    </div>
+
+    <div class="ga-divider" style="margin: 0 0 1.4rem;"><span>🌿</span></div>
+
+    <!-- MEMBERS CONTAINER -->
+    <div id="members-container"></div>
+
+    <!-- EMPTY STATE -->
+    <div class="mem-empty" id="emptyState">
+      <div class="mem-empty-icon">👥</div>
+      <p class="mem-empty-text">No members added yet</p>
+      <p class="mem-empty-sub">Click below to add your first family member</p>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="mem-actions">
+      <button class="mem-add-btn" onclick="addMember()">
+        <span class="mem-btn-icon">+</span> Add Member
+      </button>
+      <button class="mem-submit-btn" onclick="submitMembers()" id="submitBtn" disabled>
+        Save &amp; Continue →
+      </button>
+    </div>
+
+    <p class="mem-footer-note">All fields marked with <span style="color:#ea580c">*</span> are required</p>
+  </div>
+
+<script src="/static/members/members.js"></script>
+</body>
+</html>

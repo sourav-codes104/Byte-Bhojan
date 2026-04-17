@@ -1,19 +1,20 @@
 from flask import Flask
+from flask_cors import CORS
 from app.database import init_db
 from app.routes.auth_routes import auth
 from app.routes.upload import upload_bp
+from app.routes.members import members   # ✅ ADD THIS
 
-# create app FIRST
 app = Flask(__name__, static_folder="static")
 
-# register routes AFTER app creation
+# register routes
 app.register_blueprint(auth)
 app.register_blueprint(upload_bp)
+app.register_blueprint(members)  # ✅ ADD THIS
 
 
 @app.route("/")
 def home():
-    # Landing page is the entry point
     return app.send_static_file("landing/index.html")
 
 

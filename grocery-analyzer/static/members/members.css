@@ -1,0 +1,391 @@
+/* ================================
+   MEMBERS PAGE — members.css
+   Place at: static/members/members.css
+   ================================ */
+
+.mem-body {
+  min-height: 100vh;
+  background: #fff8f0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2.5rem 1rem 4rem;
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ---- MAIN CARD ---- */
+.mem-wrap {
+  width: 100%;
+  max-width: 720px;
+  background: #fff;
+  border-radius: 24px;
+  border: 1.5px solid #fed7aa;
+  box-shadow: 0 8px 40px rgba(234, 88, 12, 0.10);
+  padding: 2rem 2.2rem 2rem;
+  position: relative;
+  z-index: 10;
+  animation: cardIn 0.65s cubic-bezier(.22, .68, 0, 1.2) forwards;
+}
+
+/* ---- HEADER ---- */
+.mem-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 1.4rem;
+}
+.mem-header-icon {
+  font-size: 48px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 6px rgba(234,88,12,0.18));
+  flex-shrink: 0;
+}
+.mem-brand-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ea580c;
+  margin-bottom: 4px;
+}
+.mem-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1c1917;
+  letter-spacing: -0.02em;
+  margin: 0 0 3px;
+}
+.mem-subtitle {
+  font-size: 12px;
+  color: #a8a29e;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ---- EMPTY STATE ---- */
+.mem-empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  border: 2px dashed #fed7aa;
+  border-radius: 16px;
+  background: #fff8f4;
+  margin-bottom: 1.4rem;
+  animation: fadeInUp 0.4s both;
+}
+.mem-empty-icon { font-size: 44px; margin-bottom: 10px; }
+.mem-empty-text { font-size: 15px; font-weight: 700; color: #1c1917; margin-bottom: 4px; }
+.mem-empty-sub { font-size: 13px; color: #a8a29e; }
+
+/* ---- MEMBER CARD ---- */
+.mem-card {
+  background: #fff;
+  border: 1.5px solid #fed7aa;
+  border-radius: 18px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  animation: slideDown 0.4s cubic-bezier(0.22, 0.68, 0, 1.15) both;
+  box-shadow: 0 3px 14px rgba(234,88,12,0.07);
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-18px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.mem-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: linear-gradient(90deg, #fff8f4 0%, #f0fdf4 100%);
+  border-bottom: 1.5px solid #fed7aa;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+}
+.mem-card-header:hover { background: linear-gradient(90deg, #fff4ee 0%, #dcfce7 100%); }
+
+.mem-card-title-wrap { display: flex; align-items: center; gap: 10px; }
+.mem-card-num {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: #ea580c;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.mem-card-name-preview {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1c1917;
+}
+.mem-card-name-preview.placeholder { color: #a8a29e; font-weight: 500; }
+
+.mem-card-controls { display: flex; align-items: center; gap: 8px; }
+.mem-collapse-btn {
+  background: none;
+  border: 1.5px solid #fed7aa;
+  border-radius: 8px;
+  width: 30px; height: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: #78716c;
+  transition: all 0.2s;
+  line-height: 1;
+}
+.mem-collapse-btn:hover { background: #fff0e8; border-color: #ea580c; color: #ea580c; }
+.mem-delete-btn {
+  background: none;
+  border: 1.5px solid #fecaca;
+  border-radius: 8px;
+  width: 30px; height: 30px;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: #dc2626;
+  transition: all 0.2s;
+}
+.mem-delete-btn:hover { background: #fef2f2; }
+
+/* ---- CARD BODY ---- */
+.mem-card-body { padding: 18px 18px 20px; }
+.mem-card-body.collapsed { display: none; }
+
+.mem-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.mem-grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+
+/* ---- FIELD ---- */
+.mem-field { display: flex; flex-direction: column; gap: 5px; }
+.mem-field label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #78716c;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.mem-field label .req { color: #ea580c; margin-left: 2px; }
+.mem-field input,
+.mem-field select {
+  padding: 10px 12px;
+  border: 1.5px solid #fed7aa;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #1c1917;
+  background: #fff8f4;
+  outline: none;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.mem-field input:hover:not(:focus),
+.mem-field select:hover:not(:focus) { border-color: #fb923c; background: #fff; }
+.mem-field input:focus,
+.mem-field select:focus {
+  border-color: #16a34a;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+}
+.mem-field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2378716c' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  cursor: pointer;
+}
+
+/* ---- DISEASES ---- */
+.mem-diseases-wrap {
+  border: 1.5px solid #fed7aa;
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: #fff8f4;
+  margin-bottom: 12px;
+}
+.mem-diseases-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #78716c;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: block;
+}
+.mem-diseases-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.mem-disease-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1.5px solid #fed7aa;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.18s;
+  font-size: 13px;
+  color: #1c1917;
+}
+.mem-disease-option:hover { border-color: #ea580c; background: #fff4ee; }
+.mem-disease-option input[type="checkbox"] {
+  width: 15px; height: 15px;
+  accent-color: #ea580c;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+.mem-disease-option.checked {
+  border-color: #ea580c;
+  background: #fff4ee;
+}
+.mem-disease-option.none-checked {
+  border-color: #16a34a;
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+/* ---- BMI INDICATOR ---- */
+.mem-bmi-bar {
+  margin-bottom: 12px;
+  display: none;
+}
+.mem-bmi-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #78716c;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.mem-bmi-value {
+  font-size: 13px;
+  font-weight: 800;
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+.mem-bmi-track {
+  height: 8px;
+  background: #fef3e8;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1.5px solid #fed7aa;
+}
+.mem-bmi-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.4s ease, background 0.4s ease;
+}
+
+/* ---- ACTIONS ---- */
+.mem-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 4px;
+}
+.mem-add-btn {
+  flex: 1;
+  padding: 13px;
+  border-radius: 12px;
+  border: 2px dashed #fb923c;
+  background: #fff8f4;
+  color: #ea580c;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.mem-add-btn:hover {
+  background: #fff4ee;
+  border-color: #ea580c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(234,88,12,0.15);
+}
+.mem-btn-icon { font-size: 18px; font-weight: 400; }
+
+.mem-submit-btn {
+  flex: 1;
+  padding: 13px;
+  border-radius: 12px;
+  border: none;
+  background: #ea580c;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: 0.06em;
+  transition: all 0.2s;
+}
+.mem-submit-btn:hover:not(:disabled) {
+  background: #c2410c;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(234,88,12,0.3);
+}
+.mem-submit-btn:disabled {
+  background: #fdba74;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.mem-footer-note {
+  text-align: center;
+  font-size: 12px;
+  color: #a8a29e;
+  margin-top: 14px;
+}
+
+/* ---- SUCCESS TOAST ---- */
+.mem-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: #16a34a;
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  z-index: 9999;
+  box-shadow: 0 8px 24px rgba(22,163,74,0.3);
+  transition: transform 0.4s cubic-bezier(0.22, 0.68, 0, 1.2), opacity 0.3s;
+  opacity: 0;
+  pointer-events: none;
+}
+.mem-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 600px) {
+  .mem-wrap { padding: 1.4rem 1.2rem 1.6rem; }
+  .mem-grid-4 { grid-template-columns: 1fr 1fr; }
+  .mem-diseases-grid { grid-template-columns: 1fr 1fr; }
+  .mem-actions { flex-direction: column; }
+  .mem-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .mem-header-icon { font-size: 36px; }
+}
+@media (max-width: 400px) {
+  .mem-grid-2 { grid-template-columns: 1fr; }
+  .mem-diseases-grid { grid-template-columns: 1fr; }
+}

@@ -96,15 +96,29 @@ def categorize_items(results):
     }
 
     for r in results:
-        name = r["item"].strip().lower()
+        # Extract item name safely
+        if isinstance(r, dict):
+            item_name = r.get("item", "")
+            if isinstance(item_name, dict):
+                item_name = str(item_name)
+        else:
+            item_name = str(r)
+        if not item_name:
+            continue
+
+        # Get total calories from the result (already multiplied by quantity)
+        total_calories = r.get("calories", 0)
+        if not isinstance(total_calories, (int, float)):
+            total_calories = 0
+
+        # Match item to category
+        name = item_name.strip().lower()
         matched = fuzzy_match_item(name)
         final_name = matched if matched else name
-
         category = ITEM_TO_CATEGORY.get(final_name, "Other")
-        nutrition = get_nutrition_cached(final_name)
-        cal = nutrition["calories"] if nutrition else 0
 
-        categories[category]["calories"] += cal
+        # Add total calories (not per 100g)
+        categories[category]["calories"] += total_calories
         if final_name not in categories[category]["items"]:
             categories[category]["items"].append(final_name)
 

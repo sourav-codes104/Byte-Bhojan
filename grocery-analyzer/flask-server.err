@@ -1,0 +1,30 @@
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 834-671-409
+ * Detected change in 'C:\\Users\\soura\\Downloads\\Byte Bhojan\\Byte-Bhojan\\grocery-analyzer\\app\\routes\\upload.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 834-671-409
+ * Detected change in 'C:\\Users\\soura\\Downloads\\Byte Bhojan\\Byte-Bhojan\\grocery-analyzer\\app\\utils\\category_utils.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 834-671-409
+ * Detected change in 'C:\\Users\\soura\\Downloads\\Byte Bhojan\\Byte-Bhojan\\grocery-analyzer\\app\\routes\\upload.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 834-671-409
+ * Detected change in 'C:\\Users\\soura\\Downloads\\Byte Bhojan\\Byte-Bhojan\\grocery-analyzer\\app\\routes\\upload.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 834-671-409
+ * Detected change in 'C:\\Users\\soura\\Downloads\\Byte Bhojan\\Byte-Bhojan\\grocery-analyzer\\app\\routes\\upload.py', reloading
+ * Restarting with stat
+Traceback (most recent call last):
+  File "C:\Users\soura\Downloads\Byte Bhojan\Byte-Bhojan\grocery-analyzer\run.py", line 5, in <module>
+    from app.routes.upload import upload_bp
+  File "C:\Users\soura\Downloads\Byte Bhojan\Byte-Bhojan\grocery-analyzer\app\routes\upload.py", line 157
+    if members_data:
+SyntaxError: expected 'except' or 'finally' block

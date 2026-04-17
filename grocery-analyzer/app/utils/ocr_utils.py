@@ -26,10 +26,17 @@ NUTRITION_DB = {
 }
 
 COUNT_BASED_ITEMS = {"eggs", "banana", "apple"}
+UNIT_PATTERN = r"(kg|g|ml|l|ltr|pcs|pc|piece|pieces)"
 
 def normalize(text):
     text = text.lower()
     text = re.sub(r"[^a-z0-9 ]", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+def normalize_receipt_line(text):
+    text = text.lower()
+    text = re.sub(r"[^a-z0-9. ]", " ", text)
+    text = re.sub(r"(\d+)\s+\.(\d+)", r"\1.\2", text)
     return re.sub(r"\s+", " ", text).strip()
 
 def match_item(clean, known_items):
@@ -82,68 +89,96 @@ def parse_quantity_unit(token):
 
     return None, None
 
+def find_quantity_unit(text):
+    text = normalize_receipt_line(text)
+    match = re.search(rf"\b(\d+(?:\.\d+)?)\s*{UNIT_PATTERN}\b", text)
+    if not match:
+        return None
+
+    qty = float(match.group(1))
+    unit = match.group(2).lower()
+    if qty <= 0:
+        return None
+
+    return qty, unit
+
+def normalize_item_quantity(item, qty, unit):
+    unit = unit.lower()
+
+    if unit == "kg":
+        return qty * 1000, "g"
+
+    if unit in ["l", "ltr"]:
+        return qty * 1000, "ml"
+
+    if unit in ["g", "ml"]:
+        return qty, unit
+
+    if unit in ["pcs", "pc", "piece", "pieces"]:
+        if item in COUNT_BASED_ITEMS:
+            return qty, "pcs"
+        return None, None
+
+    return None, None
+
 def parse_items(text):
     items = {}
-    lines = [normalize(l) for l in text.split("\n") if len(l.strip()) > 2]
-
-    row_patterns = [
-        re.compile(r"^(?P<item>.+?)\s+(?P<qty>\d+(?:\.\d+)?)\s*(?P<unit>kg|g|ml|l|ltr|pcs|pc|piece|pieces)?\s+.*$", re.I),
-        re.compile(r"^(?P<item>.+?)\s+(?P<qty>\d+(?:\.\d+)?)(?P<unit>kg|g|ml|l|ltr|pcs|pc|piece|pieces)\s+.*$", re.I),
+    skip_words = [
+        "total", "gst", "grand", "subtotal", "bill", "mrp", "cashier",
+        "store", "date", "time", "payment", "saving", "paid", "thank",
+        "avenue", "item description", "qty unit"
+    ]
+    lines = [
+        normalize_receipt_line(line)
+        for line in text.split("\n")
+        if len(line.strip()) > 1
     ]
 
-    i = 0
-    while i < len(lines):
-        line = lines[i]
+    used_quantity_lines = set()
 
-        if any(x in line for x in ["total", "gst", "grand", "subtotal", "bill", "mrp", "cashier", "store", "date", "time"]):
-            i += 1
+    for i, line in enumerate(lines):
+        if any(word in line for word in skip_words):
             continue
 
-        combined = line
-        for j in range(1, 3):
-            if i + j < len(lines):
-                combined += " " + lines[i + j]
-
-        matched = None
-        for pat in row_patterns:
-            matched = pat.search(combined)
-            if matched:
-                break
-
-        if not matched:
-            i += 1
-            continue
-
-        item_text = matched.group("item")
-        qty = float(matched.group("qty"))
-        unit = (matched.group("unit") or "pcs").lower()
-
-        item = match_item(item_text, KNOWN_ITEMS + ["salt", "noodles"])
+        item = match_item(line, KNOWN_ITEMS + ["salt", "noodles"])
 
         if not item:
-            i += 1
             continue
 
-        if item in COUNT_BASED_ITEMS:
-            final_qty = qty
-            final_unit = "pcs"
-        else:
-            if unit == "kg":
-                final_qty, final_unit = qty * 1000, "g"
-            elif unit in ["l", "ltr"]:
-                final_qty, final_unit = qty * 1000, "ml"
-            elif unit in ["g", "ml"]:
-                final_qty, final_unit = qty, unit
-            else:
-                final_qty, final_unit = qty, "pcs"
+        quantity = find_quantity_unit(line)
+
+        if not quantity:
+            for j in range(i + 1, min(i + 4, len(lines))):
+                if j in used_quantity_lines:
+                    continue
+                quantity = find_quantity_unit(lines[j])
+                if quantity:
+                    used_quantity_lines.add(j)
+                    break
+
+        if not quantity:
+            for j in range(i - 1, max(i - 4, -1), -1):
+                if j in used_quantity_lines:
+                    continue
+                quantity = find_quantity_unit(lines[j])
+                if quantity:
+                    used_quantity_lines.add(j)
+                    break
+
+        if not quantity:
+            continue
+
+        qty, unit = quantity
+        final_qty, final_unit = normalize_item_quantity(item, qty, unit)
+
+        if not final_unit:
+            continue
 
         if item in items:
             if items[item]["unit"] == final_unit:
                 items[item]["quantity"] += final_qty
         else:
             items[item] = {"item": item, "quantity": final_qty, "unit": final_unit}
-
-        i += 1
 
     return list(items.values())
 
