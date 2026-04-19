@@ -2,13 +2,15 @@ import pytesseract
 from PIL import Image, ImageFilter, ImageEnhance, ImageOps
 from rapidfuzz import process, fuzz
 import re
-import requests
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 KNOWN_ITEMS = [
-    "milk", "eggs", "rice", "bread", "chicken",
-    "banana", "apple", "sugar", "oil", "salt", "noodles"
+    "milk", "atta", "butter", "sugar", "salt", "haldi",
+    "eggs", "rice", "bread", "chicken", "banana", "apple",
+    "oil", "noodles", "chana", "moong", "rajma", "dal",
+    "besan", "jaggery", "poha", "paneer", "tomato", "jeera",
+    "black salt", "raw rice", "broken rice"
 ]
 
 NUTRITION_DB = {
@@ -18,44 +20,7 @@ NUTRITION_DB = {
     "rice": {"calories": 130, "protein": 2.7, "fat": 0.3, "carbs": 28.0},
     "chicken": {"calories": 239, "protein": 27.0, "fat": 14.0, "carbs": 0.0},
     "banana": {"calories": 89, "protein": 1.1, "fat": 0.3, "carbs": 23.0},
-    "apple": {"calories": 52, "protein": 0.3, "fat": 0.2, "carbs": 14.0},
-    "sugar": {"calories": 387, "protein": 0.0, "fat": 0.0, "carbs": 100.0},
-    "oil": {"calories": 884, "protein": 0.0, "fat": 100.0, "carbs": 0.0},
-    "salt": {"calories": 0, "protein": 0.0, "fat": 0.0, "carbs": 0.0},
-    "noodles": {"calories": 138, "protein": 4.5, "fat": 1.5, "carbs": 25.0},
 }
-
-COUNT_BASED_ITEMS = {"eggs", "banana", "apple"}
-UNIT_PATTERN = r"(kg|g|ml|l|ltr|pcs|pc|piece|pieces)"
-
-def normalize(text):
-    text = text.lower()
-    text = re.sub(r"[^a-z0-9 ]", " ", text)
-    return re.sub(r"\s+", " ", text).strip()
-
-def normalize_receipt_line(text):
-    text = text.lower()
-    text = re.sub(r"[^a-z0-9. ]", " ", text)
-    text = re.sub(r"(\d+)\s+\.(\d+)", r"\1.\2", text)
-    return re.sub(r"\s+", " ", text).strip()
-
-def match_item(clean, known_items):
-    clean = normalize(clean)
-    words = clean.split()
-
-    for word in words:
-        if word in known_items:
-            return word
-
-    for item in known_items:
-        if item in clean:
-            return item
-
-    match = process.extractOne(clean, known_items, scorer=fuzz.token_sort_ratio)
-    if match and match[1] >= 75:
-        return match[0]
-
-    return None
 
 def preprocess_image(path):
     img = Image.open(path).convert("L")
@@ -68,222 +33,126 @@ def preprocess_image(path):
 
 def extract_text(path):
     img = preprocess_image(path)
-    configs = ["--psm 6", "--psm 4", "--psm 11", "--psm 3"]
-    texts = [pytesseract.image_to_string(img, config=c) for c in configs]
-    text = max(texts, key=len).lower()
-    text = text.replace("k9", "kg").replace("m1", "ml")
-    return text
+    text = pytesseract.image_to_string(img, config="--psm 6")
+    return text.lower()
 
-def parse_quantity_unit(token):
-    token = token.lower().strip()
-
-    m = re.match(r"^(\d+(?:\.\d+)?)(kg|g|ml|l|ltr|pcs|pc|piece|pieces)?$", token)
-    if m:
-        qty = float(m.group(1))
-        unit = m.group(2) or "pcs"
+def parse_quantity_unit(qty_str):
+    qty_str = qty_str.lower().strip()
+    match = re.match(r"(\d+(?:\.\d+)?)\s*(ml|kg|g|ltr|l|pcs|pc|piece|pieces)", qty_str)
+    if match:
+        qty = float(match.group(1))
+        unit = match.group(2)
+        if unit in ["pc", "piece", "pieces"]:
+            unit = "pcs"
         return qty, unit
-
-    m = re.match(r"^(\d+(?:\.\d+)?)\s*(kg|g|ml|l|ltr|pcs|pc|piece|pieces)$", token)
-    if m:
-        return float(m.group(1)), m.group(2)
-
+    if qty_str.isdigit():
+        return float(qty_str), "pcs"
     return None, None
 
-def find_quantity_unit(text):
-    text = normalize_receipt_line(text)
-    match = re.search(rf"\b(\d+(?:\.\d+)?)\s*{UNIT_PATTERN}\b", text)
-    if not match:
-        return None
+def match_item_name(raw_name, known_items):
+    raw_name = re.sub(r"[^\w\s]", " ", raw_name).lower()
+    for item in known_items:
+        if item in raw_name:
+            return item
+    match = process.extractOne(raw_name, known_items, scorer=fuzz.partial_ratio)
+    if match and match[1] >= 70:
+        return match[0]
+    return None
 
-    qty = float(match.group(1))
-    unit = match.group(2).lower()
-    if qty <= 0:
-        return None
-
-    return qty, unit
-
-def normalize_item_quantity(item, qty, unit):
-    unit = unit.lower()
-
-    if unit == "kg":
-        return qty * 1000, "g"
-
-    if unit in ["l", "ltr"]:
-        return qty * 1000, "ml"
-
-    if unit in ["g", "ml"]:
-        return qty, unit
-
-    if unit in ["pcs", "pc", "piece", "pieces"]:
-        if item in COUNT_BASED_ITEMS:
-            return qty, "pcs"
-        return None, None
-
-    return None, None
+def parse_items_from_bill(text):
+    items = []
+    lines = text.split("\n")
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+        if any(kw in line.lower() for kw in ["total", "gst", "saved", "payment", "thank you", "dmart"]):
+            continue
+        qty_match = re.search(r"(\d+(?:\.\d+)?\s*(ml|kg|g|ltr|pcs|pc))", line.lower())
+        if not qty_match:
+            continue
+        qty_str = qty_match.group(1)
+        qty, unit = parse_quantity_unit(qty_str)
+        if qty is None:
+            continue
+        name_part = line[:line.lower().find(qty_str)].strip()
+        if not name_part:
+            continue
+        name_part = re.sub(r"\d+\.?\d*", "", name_part)
+        name_part = re.sub(r"[^\w\s]", "", name_part)
+        name_part = re.sub(r"\b(premium|fresh|sliced|robusta|breast|taaza)\b", "", name_part, flags=re.I)
+        name_part = name_part.strip()
+        if len(name_part) < 3:
+            continue
+        matched_item = match_item_name(name_part, KNOWN_ITEMS)
+        if not matched_item:
+            continue
+        items.append({
+            "item": matched_item,
+            "quantity": qty,
+            "unit": unit,
+            "raw_name": name_part
+        })
+    return items
 
 def parse_items(text):
-    items = {}
-    skip_words = [
-        "total", "gst", "grand", "subtotal", "bill", "mrp", "cashier",
-        "store", "date", "time", "payment", "saving", "paid", "thank",
-        "avenue", "item description", "qty unit"
-    ]
-    lines = [
-        normalize_receipt_line(line)
-        for line in text.split("\n")
-        if len(line.strip()) > 1
-    ]
-
-    used_quantity_lines = set()
-
-    for i, line in enumerate(lines):
-        if any(word in line for word in skip_words):
-            continue
-
-        item = match_item(line, KNOWN_ITEMS + ["salt", "noodles"])
-
-        if not item:
-            continue
-
-        quantity = find_quantity_unit(line)
-
-        if not quantity:
-            for j in range(i + 1, min(i + 4, len(lines))):
-                if j in used_quantity_lines:
-                    continue
-                quantity = find_quantity_unit(lines[j])
-                if quantity:
-                    used_quantity_lines.add(j)
-                    break
-
-        if not quantity:
-            for j in range(i - 1, max(i - 4, -1), -1):
-                if j in used_quantity_lines:
-                    continue
-                quantity = find_quantity_unit(lines[j])
-                if quantity:
-                    used_quantity_lines.add(j)
-                    break
-
-        if not quantity:
-            continue
-
-        qty, unit = quantity
-        final_qty, final_unit = normalize_item_quantity(item, qty, unit)
-
-        if not final_unit:
-            continue
-
-        if item in items:
-            if items[item]["unit"] == final_unit:
-                items[item]["quantity"] += final_qty
-        else:
-            items[item] = {"item": item, "quantity": final_qty, "unit": final_unit}
-
-    return list(items.values())
-
-def fetch_nutrition_api(item):
-    url = "https://api.nal.usda.gov/fdc/v1/foods/search"
-    params = {"query": item, "api_key": "YOUR_API_KEY_HERE", "pageSize": 1}
-
-    try:
-        res = requests.get(url, params=params, timeout=5)
-        res.raise_for_status()
-        data = res.json()
-
-        foods = data.get("foods", [])
-        if not foods:
-            return None
-
-        nutrients = foods[0].get("foodNutrients", [])
-        result = {"calories": 0, "protein": 0, "carbs": 0, "fat": 0}
-
-        for n in nutrients:
-            name = (n.get("nutrientName") or "").lower()
-            value = n.get("value", 0) or 0
-
-            if "energy" in name:
-                result["calories"] = value
-            elif "protein" in name:
-                result["protein"] = value
-            elif "carbohydrate" in name:
-                result["carbs"] = value
-            elif "total lipid" in name or "fat" in name:
-                result["fat"] = value
-
-        return result
-    except Exception:
-        return None
+    return parse_items_from_bill(text)
 
 def calculate_nutrition(items):
     results = []
-
     for e in items:
-        name, qty, unit = e["item"], e["quantity"], e["unit"]
-
-        n = fetch_nutrition_api(name)
-        if not n:
-            n = NUTRITION_DB.get(name)
-
-        if not n:
-            continue
-
-        if unit in ["g", "ml"]:
+        name = e["item"]
+        qty = e["quantity"]
+        unit = e["unit"]
+        nut = NUTRITION_DB.get(name, {"calories": 0, "protein": 0, "fat": 0, "carbs": 0})
+        if unit in ["ml", "g"]:
             scale = qty / 100.0
         elif unit in ["kg", "ltr"]:
-            scale = qty
+            scale = qty * 10
         else:
             scale = qty
-
-        if unit in ["kg", "ltr"]:
-            scale = qty * 10.0
-
         results.append({
             "item": name,
             "quantity": qty,
             "unit": unit,
-            "calories": round(n["calories"] * scale, 1),
-            "protein": round(n["protein"] * scale, 1),
-            "fat": round(n["fat"] * scale, 1),
-            "carbs": round(n["carbs"] * scale, 1),
+            "calories": round(nut["calories"] * scale, 1),
+            "protein": round(nut["protein"] * scale, 1),
+            "fat": round(nut["fat"] * scale, 1),
+            "carbs": round(nut["carbs"] * scale, 1),
         })
-
     return results
 
 def calculate_totals(results):
-    return {k: round(sum(r[k] for r in results), 1) for k in ["calories", "protein", "fat", "carbs"]}
+    return {
+        "calories": sum(r["calories"] for r in results),
+        "protein": sum(r["protein"] for r in results),
+        "fat": sum(r["fat"] for r in results),
+        "carbs": sum(r["carbs"] for r in results),
+    }
 
 def divide_per_person(totals, n):
     n = max(1, n)
-    return {k: round(v / n, 1) for k, v in totals.items()}
+    return {
+        "calories": round(totals.get("calories", 0) / n, 1),
+        "protein": round(totals.get("protein", 0) / n, 1),
+        "fat": round(totals.get("fat", 0) / n, 1),
+        "carbs": round(totals.get("carbs", 0) / n, 1),
+    }
 
 def generate_warnings(data):
     warnings = []
-    if data["calories"] > 2000:
-        warnings.append("⚠️ High calorie")
-    if data["protein"] < 50:
+    if data.get("calories", 0) > 2000:
+        warnings.append("⚠️ High calorie intake")
+    elif data.get("calories", 0) > 800:
+        warnings.append("📊 Moderate calorie intake")
+    if data.get("protein", 0) < 20:
         warnings.append("⚠️ Low protein")
-    if data["fat"] > 70:
+    elif data.get("protein", 0) > 50:
+        warnings.append("💪 High protein")
+    if data.get("fat", 0) > 30:
         warnings.append("⚠️ High fat")
-    if data["carbs"] > 300:
+    if data.get("carbs", 0) > 100:
         warnings.append("⚠️ High carbs")
+    if not warnings:
+        warnings.append("✅ Well-balanced meal")
     return warnings
-
-if __name__ == "__main__":
-    text = extract_text("bill.jpg")
-    print("\nOCR:\n", text)
-
-    items = parse_items(text)
-    print("\nITEMS:\n", items)
-
-    res = calculate_nutrition(items)
-    print("\nNUTRITION:\n", res)
-
-    tot = calculate_totals(res)
-    print("\nTOTAL:\n", tot)
-
-    per = divide_per_person(tot, 3)
-    print("\nPER PERSON:\n", per)
-
-    warn = generate_warnings(per)
-    print("\nWARNINGS:\n", warn)
